@@ -11,7 +11,8 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '\\', ':Neotree reveal<CR>', { desc = 'NeoTree reveal' } },
+    -- NOTE: Added <C-W>= to resize current windows
+    { '\\', ':Neotree reveal<CR><C-w>=', { desc = 'NeoTree reveal' } },
   },
   opts = {
     filesystem = {
