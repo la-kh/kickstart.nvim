@@ -104,6 +104,9 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- User-defined keymaps
+vim.keymap.set('n', '<C-w>f', '<C-w>vgf', { desc = 'Open file under the cursor in a vsplit' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -118,7 +121,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+-- Remove whitespace ater line
+vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = { '*' },
   callback = function()
     local save_cursor = vim.fn.getpos '.'
@@ -127,6 +131,12 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
     end)
     vim.fn.setpos('.', save_cursor)
   end,
+})
+
+-- Restore blinking cursor
+vim.api.nvim_create_autocmd({ 'VimLeave', 'VimSuspend' }, {
+  pattern = { '*' },
+  command = 'set guicursor=a:block-blinkon500',
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -590,7 +600,7 @@ require('lazy').setup({
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
+        javascript = { { 'prettierd', 'prettier' } },
       },
     },
   },
@@ -743,7 +753,7 @@ require('lazy').setup({
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+      -- require('mini.surround').setup()
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
